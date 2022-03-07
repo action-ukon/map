@@ -18,6 +18,22 @@ struct Spot: Identifiable {
     }
 }
 
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    let manager = CLLocationManager()
+    @Published var resion = MKCoordinateRegion()
+    
+    override init() {
+        super.init()
+        manager.delegate = self
+        manager.requestWhenInUseAuthorization()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.distanceFilter = 2
+        manager.stopUpdatingLocation()
+    }
+    
+}
+
+
 struct ContentView: View {
     @State var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
